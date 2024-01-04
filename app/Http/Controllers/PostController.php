@@ -7,6 +7,23 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function all()
+    {
+        $posts = Post::all();
+
+        return view('home', ['posts' => $posts]);
+    }
+
+    public function yours()
+    {
+        $posts = [];
+        if (auth()->check()) {
+            $posts = auth()->user()->posts()->latest()->get();
+        }
+
+        return view('home', ['posts' => $posts]);
+    }
+
     public function delete(Post $post)
     {
         if (auth()->user()->id !== $post['user_id']) {

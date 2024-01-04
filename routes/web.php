@@ -17,20 +17,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    // $posts = Post::where('user_id', auth()->id())->get();
-    $posts = [];
-    if (auth()->check()) {
-        $posts = auth()->user()->posts()->latest()->get();
-    }
+Route::get('/', fn () => redirect('all'));
 
-    return view('home', ['posts' => $posts]);
-});
-
+Route::get('/register', fn () => view('register'));
+Route::get('/login', fn () => view('login'));
 Route::post('/register', [UserController::class, 'register']);
-Route::post('/logout', [UserController::class, 'logout']);
 Route::post('/login', [UserController::class, 'login']);
+Route::post('/logout', [UserController::class, 'logout']);
 
+Route::get('/all', [PostController::class, 'all']);
+Route::get('/yours', [PostController::class, 'yours']);
+Route::get('/createPost', fn () => view('create-post'));
 Route::post('/createPost', [PostController::class, 'create']);
 Route::get('/editPost/{post}', [PostController::class, 'showEdit']);
 Route::put('/editPost/{post}', [PostController::class, 'edit']);
